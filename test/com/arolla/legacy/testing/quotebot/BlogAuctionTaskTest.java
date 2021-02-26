@@ -11,14 +11,17 @@ class BlogAuctionTaskTest {
     public void it_prices_and_publishes_proposals()
     {
         // Arrange
-        BlogAuctionTask blogAuctionTask = new BlogAuctionTask();
+        SpyProposalPublisher spyProposalPublisher = new SpyProposalPublisher();
+        StubMarketStudy stubMarketStudy = new StubMarketStudy();
+        BlogAuctionTask blogAuctionTask = new BlogAuctionTask(stubMarketStudy, spyProposalPublisher, (proposalBase, timeFactor) -> proposalBase);
         String blog = "";
         String mode = "";
+        double expectedProposal = 11;
 
         // Act
         blogAuctionTask.PriceAndPublish(blog, mode);
 
         // Assert
-        Assertions.assertTrue(false);
+        Assertions.assertTrue(spyProposalPublisher.publishHasBeenCalledWith(expectedProposal), () -> "published with " + spyProposalPublisher.proposal + " instead of " + expectedProposal);
     }
 }

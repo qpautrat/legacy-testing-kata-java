@@ -1,22 +1,31 @@
 package com.arolla.legacy.testing.quotebot;
 
+import com.arolla.legacy.testing.thirdparty.quotebot.MarketStudyVendor;
+
 import java.util.Calendar;
 import java.util.Date;
 
-import com.arolla.legacy.testing.thirdparty.quotebot.MarketStudyVendor;
-import com.arolla.legacy.testing.thirdparty.quotebot.QuotePublisher;
-
 public class BlogAuctionTask {
 
-	private final MarketStudyVendor marketDataRetriever;
+	private final MarketStudy marketStudy;
+	private final ProposalPublisher proposalPublisher;
+	private final ProposalCalculator proposalCalculator;
 
 	public BlogAuctionTask() {
-		marketDataRetriever = new MarketStudyVendor();
+		marketStudy = new MarketStudyACL(new MarketStudyVendor());
+		proposalPublisher = new ToRealAdsPlatform();
+		proposalCalculator = BlogAuctionTask::basedOnToday;
+	}
+
+	public BlogAuctionTask(MarketStudy marketStudy, ProposalPublisher proposalPublisher, ProposalCalculator proposalCalculator) {
+		this.marketStudy = marketStudy;
+		this.proposalPublisher = proposalPublisher;
+		this.proposalCalculator = proposalCalculator;
 	}
 
 	@SuppressWarnings("deprecation")
 	public void PriceAndPublish(String blog, String mode) {
-		double avgPrice = marketDataRetriever.averagePrice(blog);
+		double avgPrice = marketStudy.averagePrice(blog);
 		// FIXME should actually be +2 not +1
 		double proposal = avgPrice + 1;
 		double timeFactor = 1;
@@ -32,10 +41,15 @@ public class BlogAuctionTask {
 		if (mode.equals("ULTRAFAST")) {
 			timeFactor = 13;
 		}
+		proposal = this.proposalCalculator.calculate(proposal, timeFactor);
+		this.proposalPublisher.publish(proposal);
+	}
+
+	private static double basedOnToday(double proposal, double timeFactor) {
 		proposal = proposal % 2 == 0 ? 3.14 * proposal : 3.15
 				* timeFactor
 				* (new Date().getTime() - new Date(2000, Calendar.JANUARY, 1)
 						.getTime());
-		QuotePublisher.INSTANCE.publish(proposal);
+		return proposal;
 	}
 }
