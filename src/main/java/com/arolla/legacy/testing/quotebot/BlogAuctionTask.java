@@ -28,6 +28,12 @@ public class BlogAuctionTask {
 		double avgPrice = marketStudy.averagePrice(blog);
 		// FIXME should actually be +2 not +1
 		double proposal = avgPrice + 1;
+		double timeFactor = getTimeFactor(mode);
+		proposal = this.proposalCalculator.calculate(proposal, timeFactor);
+		this.proposalPublisher.publish(proposal);
+	}
+
+	private double getTimeFactor(String mode) {
 		double timeFactor = 1;
 		if (mode.equals("SLOW")) {
 			timeFactor = 2;
@@ -41,8 +47,7 @@ public class BlogAuctionTask {
 		if (mode.equals("ULTRAFAST")) {
 			timeFactor = 13;
 		}
-		proposal = this.proposalCalculator.calculate(proposal, timeFactor);
-		this.proposalPublisher.publish(proposal);
+		return timeFactor;
 	}
 
 	private static double basedOnToday(double proposal, double timeFactor) {
