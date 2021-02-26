@@ -8,15 +8,19 @@ public class ApplyMarginToMarketStudyTest {
     @Test
     public void it_applies_margin_to_market_price() {
         // Arrange
-        MarketStudy marketStudyVendor = (blog) -> 10;
+        MarketStudy marketStudy = (blog) -> 10;
         String blog = "";
-        ApplyMarginToMarketStudy marketStudyWithMargin = new ApplyMarginToMarketStudy(marketStudyVendor);
+        ApplyMarginToMarketStudy marketStudyWithMargin = new ApplyMarginToMarketStudy(marketStudy);
         double expectedAveragePrice = 12;
 
         // Act
         double averagePrice = marketStudyWithMargin.averagePrice(blog);
 
         // Assert
-        Assertions.assertEquals(expectedAveragePrice, averagePrice, () -> "Average price is " + averagePrice + " instead of " + expectedAveragePrice + ". Is margin applied correctly ?");
+        Assertions.assertEquals(
+            expectedAveragePrice,
+            averagePrice,
+            () -> "Average price is " + averagePrice + " instead of " + expectedAveragePrice + ". Is margin applied correctly ? Did you ask from MarketStudyVendor ?"
+        );
     }
 }

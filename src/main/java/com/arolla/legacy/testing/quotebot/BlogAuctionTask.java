@@ -12,7 +12,7 @@ public class BlogAuctionTask {
 	private final ProposalCalculator proposalCalculator;
 
 	public BlogAuctionTask() {
-		marketStudy = new MarketStudyACL(new MarketStudyVendor());
+		marketStudy = new ApplyMarginToMarketStudy(new MarketStudyACL(new MarketStudyVendor()));
 		proposalPublisher = new ToRealAdsPlatform();
 		proposalCalculator = BlogAuctionTask::basedOnToday;
 	}
@@ -26,9 +26,8 @@ public class BlogAuctionTask {
 	@SuppressWarnings("deprecation")
 	public void PriceAndPublish(String blog, String mode) {
 		double avgPrice = marketStudy.averagePrice(blog);
-		double proposal = avgPrice + 2;
 		double timeFactor = getTimeFactor(mode);
-		proposal = this.proposalCalculator.calculate(proposal, timeFactor);
+		double proposal = this.proposalCalculator.calculate(avgPrice, timeFactor);
 		this.proposalPublisher.publish(proposal);
 	}
 
