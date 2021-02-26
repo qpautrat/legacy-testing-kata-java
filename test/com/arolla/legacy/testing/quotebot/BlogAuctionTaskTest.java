@@ -19,12 +19,12 @@ class BlogAuctionTaskTest {
         );
         String blog = "";
         String mode = "";
-        double expectedProposal = 11;
+        double expectedProposal = 12;
 
         // Act
         blogAuctionTask.PriceAndPublish(blog, mode);
 
         // Assert
-        Assertions.assertTrue(spyProposalPublisher.publishHasBeenCalledWith(expectedProposal), () -> "published with " + spyProposalPublisher.proposal + " instead of " + expectedProposal);
+        Assertions.assertTrue(spyProposalPublisher.publishHasBeenCalledWith(expectedProposal), () -> "Proposal has been published with " + spyProposalPublisher.proposal + " instead of " + expectedProposal);
     }
 }
