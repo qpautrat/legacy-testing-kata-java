@@ -8,10 +8,11 @@ public class ApplyMarginToMarketStudyTest {
     @Test
     public void it_applies_margin_to_market_price() {
         // Arrange
-        MarketStudy marketStudy = (blog) -> 10;
+        double expectedPriceFromMarketStudy = 10;
+        double expectedAveragePrice = expectedPriceFromMarketStudy + ApplyMarginToMarketStudy.MARGIN;
+        MarketStudy marketStudy = (blog) -> expectedPriceFromMarketStudy;
         String blog = "";
         ApplyMarginToMarketStudy marketStudyWithMargin = new ApplyMarginToMarketStudy(marketStudy);
-        double expectedAveragePrice = 12;
 
         // Act
         double averagePrice = marketStudyWithMargin.averagePrice(blog);
