@@ -19,7 +19,7 @@ class BlogAuctionTaskTest {
         );
         String blog = "";
         String mode = "";
-        double expectedProposal = 12;
+        double expectedProposal = 10;
 
         // Act
         blogAuctionTask.PriceAndPublish(blog, mode);
