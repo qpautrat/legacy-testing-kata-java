@@ -12,8 +12,11 @@ class BlogAuctionTaskTest {
     {
         // Arrange
         SpyProposalPublisher spyProposalPublisher = new SpyProposalPublisher();
-        StubMarketStudy stubMarketStudy = new StubMarketStudy();
-        BlogAuctionTask blogAuctionTask = new BlogAuctionTask(stubMarketStudy, spyProposalPublisher, (proposalBase, timeFactor) -> proposalBase);
+        BlogAuctionTask blogAuctionTask = new BlogAuctionTask(
+                (blog) -> 10,
+                spyProposalPublisher,
+                (proposalBase, timeFactor) -> proposalBase
+        );
         String blog = "";
         String mode = "";
         double expectedProposal = 11;
