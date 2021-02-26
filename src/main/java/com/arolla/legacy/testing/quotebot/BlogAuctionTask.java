@@ -26,8 +26,7 @@ public class BlogAuctionTask {
 	@SuppressWarnings("deprecation")
 	public void PriceAndPublish(String blog, String mode) {
 		double avgPrice = marketStudy.averagePrice(blog);
-		// FIXME should actually be +2 not +1
-		double proposal = avgPrice + 1;
+		double proposal = avgPrice + 2;
 		double timeFactor = getTimeFactor(mode);
 		proposal = this.proposalCalculator.calculate(proposal, timeFactor);
 		this.proposalPublisher.publish(proposal);
